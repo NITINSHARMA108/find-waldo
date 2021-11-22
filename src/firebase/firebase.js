@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 
   import { initializeApp } from "firebase/app";
-
+ import env from 'react-dotenv';
  import { getDatabase, ref, get, child} from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -9,13 +9,13 @@
 // Your web app's Firebase configuration
 const getInfo = async (name, x, y, screenX, screenY) => {
     const firebaseConfig = {
-      apiKey: "AIzaSyCCd9bjsXC7cmKl01CPCI3gFbsZspwpmYM",
-      authDomain: "find-waldo-5b71e.firebaseapp.com",
-      projectId: "find-waldo-5b71e",
-      storageBucket: "find-waldo-5b71e.appspot.com",
-      messagingSenderId: "330540042841",
-      appId: "1:330540042841:web:79fa5697673cbf559cbf48",
-      databaseURL: "https://find-waldo-5b71e-default-rtdb.firebaseio.com/"
+      apiKey: env.apiKey,
+      authDomain: env.authDomain,
+      projectId: env.projectId,
+      storageBucket: env.storageBucket,
+      messagingSenderId: env.messagingSenderId,
+      appId: env.appId,
+      databaseURL: env.databaseURL
       
     };
     
@@ -26,11 +26,16 @@ const getInfo = async (name, x, y, screenX, screenY) => {
     const app = initializeApp(firebaseConfig);
    // console.log(app);
     const dbRef = ref(getDatabase());
-
-    const data =  await get(child(dbRef, `screen`)).catch((err)=>{
-      console.log('server not responding!!');
-    }); 
-    
+    let flag=false;
+    const data =  await get(child(dbRef, `screen`))
+                .catch((err)=>{
+                  console.log('server not responding!!');
+                  flag=true;
+                  return false;
+                }); 
+    if(flag===true){
+      return false;
+    }
      console.log(data);
 
      const datasheet = await data.toJSON();
@@ -39,13 +44,13 @@ const getInfo = async (name, x, y, screenX, screenY) => {
      const tempY = (y/screenY)*100;
      console.log(tempX,tempY);
      /* && (tempY)>=datasheet[name].y1 && (tempY)<=datasheet[name].y2 */
-     if((tempX)>=datasheet[name].x1 && (tempX)<=datasheet[name].x2 )
+     if((tempX)>=datasheet[name].x1 && (tempX)<=datasheet[name].x2 && (tempY)>=datasheet[name].y1 && (tempY)<=datasheet[name].y2 )
      {
-       console.log(name);
+        console.log('match found');
         return true;
      }
             
-      console.log('no bro');
+      
       return false;
      
    

@@ -6,31 +6,36 @@ import getInfo from '../firebase/firebase';
 
 const Image = function () {
  // getInfo('Waldo',1000,150);
- const [score,setscore]=useState(0);
- if(score===2)
- {
-   setscore(0);
-   alert('game over');
- }
+  const [score,setscore]=useState([]);
+  if(score.length===2)
+  {
+    window.location.reload();
+  }
+ 
   const showlist = (x, y) => {
 
     const list = document.querySelector('.list');
     console.log(list);
     console.log(window.scrollY);
+    if(list.style.display === 'block')
+    {
+      list.style.display='none';
+      return;
+    }
     list.style.display = 'block';
     list.style.position = 'absolute';
     // console.log(window.innerHeight);
+
     const windowHeight = document.querySelector('.find').offsetHeight;
     console.log(window.innerHeight);
     // console.log(windowHeight);
     console.log(window.innerHeight-windowHeight);
     
-    if (windowHeight - y <= 150) {
+    
       
-      list.style.top = `${y + window.scrollY}px`;
-    } else {
-      list.style.top = `${y + window.scrollY}px`;
-    }
+    list.style.top = `${y + window.scrollY}px`;
+    
+     
     list.style.left = `${x}px`;
 
     
@@ -38,19 +43,25 @@ const Image = function () {
 
   const callBackend = async (name) => {
     console.log(name);
-    const positionY=document.querySelector('.list').offsetTop;
+    const positionY=document.querySelector('.list').offsetTop-(window.innerHeight/10);
     const positionX=document.querySelector('.list').offsetLeft;
-    // positionX=positionX.split(0,positionX.length-2);
-    // positionY=positionY.split(0,positionY.length-2);
     console.log(positionX,positionY);
-    const res=await getInfo(name,Number(positionX),Number(positionY),window.innerWidth,window.innerHeight);
+    const Y= document.querySelector('.find').offsetHeight;
+    console.log(Y);
+    const res=await getInfo(name,Number(positionX),Number(positionY),window.innerWidth,Y);
     if(res===true){
       document.querySelector('.success').style.display='block';
       setTimeout(()=>{
         document.querySelector('.success').style.display='none';
       },1000);
-      setscore(score+1);
-      console.log(score);
+      setscore(()=>{
+        if(name in score){
+          return [...score];
+        }
+        
+        return [...score,name];
+        
+      })
      
     }
     else{
@@ -59,6 +70,7 @@ const Image = function () {
         document.querySelector('.failure').style.display='none';
       },1000);
     }
+    
 
     
   };

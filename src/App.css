@@ -4,6 +4,9 @@ body {
   height: 100vh;
   overflow-x: hidden;
 }
+.header img {
+  height: 70%;
+}
 .header {
   height: 10vh;
   display: flex;
@@ -11,9 +14,7 @@ body {
   background-color: black;
   color: white;
 }
-.header img {
-  height: 100%;
-}
+
 .image {
   height: 90vh;
 }

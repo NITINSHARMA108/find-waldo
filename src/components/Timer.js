@@ -25,7 +25,7 @@ const Timer = function () {
       time = { ...time, second: sec + 1 };
     }
 
-    document.querySelector('.time').innerHTML = `${time.hour}:${time.minute<10?`0${time.minute}`:time.minute}:${time.second<10?`0${time.second}`:time.second}`;
+    document.querySelector('.time').innerHTML = `Timer: ${time.hour<10?`0${time.hour}`:time.hour}:${time.minute<10?`0${time.minute}`:time.minute}:${time.second<10?`0${time.second}`:time.second}`;
   }, 1000);
   return (
     <div className="time" />
