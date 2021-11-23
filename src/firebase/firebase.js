@@ -19,70 +19,45 @@ const getInfo = async (name, x, y, screenX, screenY) => {
       
     };
     
-    // firebase.initializeApp(firebaseConfig);
-
-    // Initialize Firebase
-    // const app = initializeApp(firebaseConfig);
+    
     const app = initializeApp(firebaseConfig);
-   // console.log(app);
+  
     const dbRef = ref(getDatabase());
     let flag=false;
-    const data =  await get(child(dbRef, `screen`))
+    const data = await get(child(dbRef, `screen`))
                 .catch((err)=>{
                   console.log('server not responding!!');
                   flag=true;
                   return false;
                 }); 
     if(flag===true){
-      return false;
+      return {server:false,response:false};
     }
      console.log(data);
 
-     const datasheet = await data.toJSON();
-     
+     const datasheet = data.toJSON();
+     console.log(datasheet);
      const tempX = (x/screenX)*100;
      const tempY = (y/screenY)*100;
      console.log(tempX,tempY);
-     /* && (tempY)>=datasheet[name].y1 && (tempY)<=datasheet[name].y2 */
+     
      if((tempX)>=datasheet[name].x1 && (tempX)<=datasheet[name].x2 && (tempY)>=datasheet[name].y1 && (tempY)<=datasheet[name].y2 )
      {
         console.log('match found');
-        return true;
+        return {server:true,response:true};
      }
             
       
-      return false;
+      return {server:true,response:false};
      
    
    
-    // return datasheet;
+    
 
     
 
 }
 
-// const datasheet=getInfo();
+
 
 export default getInfo;
-/*
-
-import { initializeApp } from 'firebase/app';
-import { getDatabase } from "firebase/database";
-
-// Set the configuration for your app
-// TODO: Replace with your project's config object
-const firebaseConfig = {
-  apiKey: "apiKey",
-  authDomain: "projectId.firebaseapp.com",
-  // For databases not in the us-central1 location, databaseURL will be of the
-  // form https://[databaseName].[region].firebasedatabase.app.
-  // For example, https://your-database-123.europe-west1.firebasedatabase.app
-  databaseURL: "https://databaseName.firebaseio.com",
-  storageBucket: "bucket.appspot.com"
-};
-
-const app = initializeApp(firebaseConfig);
-
-// Get a reference to the database service
-const database = getDatabase(app);
-*/
