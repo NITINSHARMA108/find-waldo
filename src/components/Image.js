@@ -21,32 +21,19 @@ const Image = function () {
       list.style.display='none';
       return;
     }
+
     list.style.display = 'block';
     list.style.position = 'absolute';
-    // console.log(window.innerHeight);
-
     const windowHeight = document.querySelector('.find').offsetHeight;
-    console.log(window.innerHeight);
-    // console.log(windowHeight);
-    console.log(window.innerHeight-windowHeight);
-    
-    
-      
     list.style.top = `${y + window.scrollY}px`;
-    
-     
     list.style.left = `${x}px`;
-
-    
   };
 
   const callBackend = async (name) => {
-    console.log(name);
+    
     const positionY=document.querySelector('.list').offsetTop-(window.innerHeight/10);
     const positionX=document.querySelector('.list').offsetLeft;
-    console.log(positionX,positionY);
     const Y= document.querySelector('.find').offsetHeight;
-    console.log(Y);
     const response=await getInfo(name,Number(positionX),Number(positionY),window.innerWidth,Y);
     if(response.server===true){
         if(response.response===true){
@@ -84,7 +71,7 @@ const Image = function () {
 
   const getClickcoord = (e) => {
     
-    // console.log(e.clientX, e.clientY);
+    
     showlist(e.clientX, e.clientY);
   };
   return (
