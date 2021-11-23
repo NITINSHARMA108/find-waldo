@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './components/Header';
 import './App.css';
 
@@ -11,7 +11,7 @@ import Image from './components/Image';
 const App = function() {
 
 
- const [highscore,sethighscore]=useState(0);
+ 
   
 
 
@@ -24,7 +24,7 @@ const App = function() {
 
 
      
-      <Header highscore={highscore}/>
+      <Header/>
 
 
 
